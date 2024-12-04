@@ -1,0 +1,36 @@
+pipeline {
+    agent {
+        label '' // Adjust the label based on your Jenkins node configuration, or leave empty for any agent
+    }
+    tools {
+        maven 'M3' // Ensure Maven is installed in Jenkins with the alias 'M3'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', 
+                    url: 'https://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@github.com/raouaa1/SpringPetClinc.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                bat 'mvn compile' // Use 'sh' instead of 'bat' if running on a Linux/MacOS Jenkins node
+            }
+        }
+        stage('Test') {
+            steps {
+                bat 'mvn test'
+            }
+        }
+        stage('Package') {
+            steps {
+                bat 'mvn package'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                bat 'java -jar target/spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar'
+            }
+        }
+    }
+}
